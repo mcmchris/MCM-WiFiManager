@@ -331,6 +331,9 @@ class WiFiManager
 
     //called when saving either params-in-wifi or params page
     void          setSaveParamsCallback( std::function<void()> func );
+    
+    //called when erase config is called, before erasing
+    void          setEraseCallback(std::function<void()> func);
 
     //called just before doing OTA update
     void          setPreOtaUpdateCallback( std::function<void()> func );
@@ -531,7 +534,8 @@ class WiFiManager
     std::vector<const char *> _menuIdsParams  = {"wifi","param","info","exit"};
     std::vector<const char *> _menuIdsUpdate  = {"wifi","param","info","update","exit"};
     std::vector<const char *> _menuIdsDefault = {"wifi","info","exit","sep","update"};
-
+    std::function<void()> _eraseCallback = NULL;
+    
     // ip configs @todo struct ?
     IPAddress     _ap_static_ip;
     IPAddress     _ap_static_gw;

@@ -2380,6 +2380,12 @@ void WiFiManager::handleErase(boolean opt) {
   DEBUG_WM(WM_DEBUG_NOTIFY,F("<- HTTP Erase"));
   #endif
   handleRequest();
+
+  if (_eraseCallback) {
+      DEBUG_WM(F("Firing custom erase callback (Factory Reset)..."));
+      _eraseCallback(); 
+  }
+  
   String page = getHTTPHead(FPSTR(S_titleerase), FPSTR(C_erase)); // @token titleerase
 
   bool ret = erase(opt);
@@ -2882,6 +2888,10 @@ void WiFiManager::setSaveParamsCallback( std::function<void()> func ) {
  */
 void WiFiManager::setPreSaveParamsCallback( std::function<void()> func ) {
   _presaveparamscallback = func;
+}
+
+void WiFiManager::setEraseCallback(std::function<void()> func) {
+    _eraseCallback = func;
 }
 
 /**
